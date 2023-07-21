@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .footer {
+        grid-area:direction;
+        margin: 0 auto;
+        width: fit-content;
+        text-align: center;
+        background-color: beige;
+        padding: 3px 20px 3px 20px;
+        border-radius: 10px;
+    }
+    .footer a {
+        color: black;
+        text-decoration: none;
+    }
+    .newbtn a{
+        color: black;
+        text-decoration: none;
+    }
+    .sideMenu{
+        list-style: none;
+        grid-area:direction;
+        margin: 0 auto;
+        width: fit-content;
+        text-align: center;
+        background-color: beige;
+        padding: 3px 20px 3px 20px;
+        border-radius: 10px;
+        float: right;
+        text-decoration: none;
+        color: black;
+
+    }
+    .sideMenu li{
+    display: inline-block;
+    padding-left: 20px;
+    }
+    /*
+    a{text-decoration: none;}
+    a:visited{color: black;}*/
+</style>
+<div class="container">  
+    <h1>솜책방 커뮤니티</h1>
+    <br>
+    <ul class="sideMenu">
+        <li><a href="{% url 'community:community_new'%}"  class="newbtn">새 글쓰기 </a>&nbsp; &nbsp;|</li>
+        <li>{% if user.is_authenticated %}
+                    
+            <a href="{% url 'community:bookmark'%}" onmouseover="OnMouseInTopMenu(this)" onmouseout="OnMouseOutTopMenu(this)"> 북마크 </a>
+        {% else %}
+            <a href="#" onclick="auth()" onmouseover="OnMouseInTopMenu(this)" onmouseout="OnMouseOutTopMenu(this)"></a>북마크 </a>
+        {%endif%}</li>
+    </ul>
+    <br><br>
+    <table class="table">
+        <tr>
+            <td>제목</td>
+            <td>작성자</td>
+            <td>작성일</td>
+            <td>더보기</td>
+        </tr>
+
+        {% for content in posts %}
+        <tr>
+            <td>{{content.title}}</td>
+            <td>{{content.author}}</td>
+            <td>{{content.date | date:"Y-m-d"}}</td>
+            <td><a href="{% url 'community:community_detail' content.id%}">자세히보기</a></td>
+        </tr>
+        {% empty %}
+            <br>
+            <h3>커뮤니티 글이 존재하지 않습니다. 새로운 글을 작성해주세요.</h3>
+        {% endfor %}
+    </table>
+</div>   
+    
+<div class="footer">
+    {% if posts.has_previous %}
+        <a href="?page=1">1</a>
+        <a href="?page={{posts.previous_page_number}}">◀</a>
+    {% endif %}
+    <span>{{posts.number}}</span>
+    <span>of</span>
+    <span>{{posts.paginator.num_pages}}</span>
+    {%if posts.has_next%}
+        <a href="?page={{posts.next_page_number}}">▶</a>
+        <a href="?page={{posts.paginator.num_pages}}">{{posts.paginator.num_pages}}</a>
+    {% endif %}
+</div>
+
+{% endblock %}

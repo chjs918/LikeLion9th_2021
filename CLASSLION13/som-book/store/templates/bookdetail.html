@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .item-box {
+        display: grid;
+        /* gap: 5px; */
+        grid-template-columns: 1fr 100px 2fr 2fr 1fr;
+    }
+    .div_img { 
+        grid-column: 2 / 3; 
+        padding: 10px;
+    }
+    .div_info { 
+        grid-column: 3 / 5; 
+        padding: 10px;
+    }
+    .btn_cart {
+        background-color: dodgerblue;
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+    }
+    .div_info a {
+        text-decoration: none;
+    }
+    .book_title {
+        font-size: 27px;
+    }
+    .isbn_text {
+        color: rgb(156, 156, 156);
+    }
+    .price {
+        font-size: 20px;
+        color:rgb(3, 86, 196);
+    }
+    .cart a{
+        background-color: beige;
+        padding: 10px;
+        border-radius: 10px;
+        color: black;
+    }
+</style>
+
+<div class="item-box">
+    {%if book.image %}
+    <div class="div_img"><img src="{{book.image}}"></div>
+    {%endif%}
+    <div class="div_info">
+        <p class="book_title">{{book.title}}</p>
+        <hr>
+        <p>{{book.author}} | {{book.publisher}} | {{book.pubdate}}</p>
+        
+        <p>{{book.description}}</p>
+        <p class="isbn_text">ISBN | {{book.isbn}}</p>
+        <hr>
+        <p class="price">판매가 &nbsp; {{book.price}} 원</p>
+        
+        <!--<a href="" class="btn_cart">카트에 넣기</a>-->
+        <form action="{% url 'cart:book_add' book.id %}" method="post">
+            {{add_to_cart}}
+            {% csrf_token %}
+            <input type="submit" value="장바구니에 넣기">
+        </form>
+        <br>
+        <div class="cart"> 
+            <a href="{%url 'cart:detail' %}">&#128722;내 장바구니 확인하기</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

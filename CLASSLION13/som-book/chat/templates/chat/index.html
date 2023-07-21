@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Rooms</title>
+</head>
+<style>
+    .input1 {
+        width:300px;
+        height:50px;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid black;
+    }
+    .input2 {
+        width:70px;
+        height:50px;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid black;
+        
+    }
+    body{
+        text-align: center;
+    }
+</style>
+<body>
+    <h3>들어가고 싶은 채팅룸을 입력해 주세요. (영어로 입력)</h3><br>
+    <input class="input1" id="room-name-input" type="text" size="100">
+    <input class="input2" id="room-name-submit" type="button" value="Enter">
+
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+    </script>
+</body>
+</html>
+
+{% endblock %}
